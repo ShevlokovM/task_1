@@ -1,0 +1,18 @@
+{    
+    "comment_1": "input_type and output_type possible values: 1 - int, 2 - float",
+    "input_type": 1,
+    "output_type": 2,
+    "handlers_count": 8,
+    "comment_2": "handler possible values: 1 - mult, 2 - pow, 3 - log, 4 - average,",
+    "handlers":
+    [
+        {"handler": 1, "argument": 125},
+        {"handler": 3, "argument": 4},
+        {"handler": 2, "argument": 6},
+        {"handler": 4, "argument": 3},
+        {"handler": 1, "argument": 125},
+        {"handler": 3, "argument": 4},
+        {"handler": 2, "argument": 6},
+        {"handler": 4, "argument": 3}
+    ]
+}
