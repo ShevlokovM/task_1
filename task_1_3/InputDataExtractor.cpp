@@ -5,6 +5,9 @@ InputDataExtractor::InputDataExtractor(std::shared_ptr<std::vector<std::string> 
     this->string_input_data_ = string_input_data;
 }
 
+///
+/// \brief InputDataExtractor::extract
+/// извлекает данные из файла, и кладет их в string-массив
 void InputDataExtractor::extract()
 {
     std::ifstream data_file("../input_data.txt");

@@ -6,15 +6,17 @@
 #include <memory>
 #include <vector>
 
+// класс отвечающий за финальную конвертацию данных, перед записью в файл
 class FinalConverter
 {
 protected:
-    std::shared_ptr<std::vector<std::string> > string_input_data_;
+    std::shared_ptr<std::vector<std::string> > string_input_data_; // указатель на массив с обрабатываемыми данными
 public:
     FinalConverter(std::shared_ptr<std::vector<std::string> > string_input_data);
     virtual void convert() = 0;
 };
 
+// конвертация int - float
 class IntToFloatConverter : public FinalConverter
 {
 public:
@@ -22,6 +24,7 @@ public:
     virtual void convert();
 };
 
+// конвертация float - int
 class FloatToIntConverter : public FinalConverter
 {
 public:

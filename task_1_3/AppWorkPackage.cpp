@@ -2,6 +2,9 @@
 
 AppWorkPackage::AppWorkPackage() {}
 
+///
+/// \brief AppWorkPackage::init
+/// инициализирует указатели на основные обработчики приложения
 void AppWorkPackage::init()
 {
     this->string_input_data_ = std::make_shared<std::vector<std::string> >();
@@ -10,10 +13,14 @@ void AppWorkPackage::init()
     this->param_extractor_ptr_ = std::make_shared<ParamExtractor>(this->handlers_, &this->input_type_, &this->output_type_);
 }
 
+///
+/// \brief AppWorkPackage::create_run_package
+/// запускает все обработчики приложения
 void AppWorkPackage::create_run_package()
 {
     init();
 
+    // извлечение параметров обработки и входных данных
     try
     {
         this->param_extractor_ptr_->extract();
@@ -25,6 +32,7 @@ void AppWorkPackage::create_run_package()
         return;
     }
 
+    // проверка валидности входных данных
     if(this->input_type_ == INT_)
     {
         input_validation_ptr_ = std::make_shared<IntInputValidation>(this->string_input_data_);
@@ -46,6 +54,7 @@ void AppWorkPackage::create_run_package()
         return;
     }
 
+    // обработка входных данных
     if(this->input_type_ == INT_)
     {
         this->handler_ptr_ = std::make_shared<IntHandler>(this->string_input_data_, this->handlers_);
@@ -65,6 +74,7 @@ void AppWorkPackage::create_run_package()
         return;
     }
 
+    // преобразование входных данных, в случае различия входяхего и исходящего типов
     std::shared_ptr<FinalConverter> final_converter_ptr_;
 
     if(this->input_type_ == INT_ && this->output_type_ == FLOAT_)
@@ -81,6 +91,7 @@ void AppWorkPackage::create_run_package()
         final_converter_ptr_->convert();
     }
 
+    // запись преобразованных данных в файл с результатами
     std::shared_ptr<ResultWriter> result_writer_ptr_ = std::make_shared<ResultWriter>(this->string_input_data_);
 
     try

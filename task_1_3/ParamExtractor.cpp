@@ -7,7 +7,9 @@ ParamExtractor::ParamExtractor(std::shared_ptr<std::vector<std::pair<int, int> >
     this->output_type_ = output_type;
 }
 
-
+///
+/// \brief ParamExtractor::extract
+/// извлекает данные из json-файла конфигурации
 void ParamExtractor::extract()
 {
     nlohmann::json json_config;   

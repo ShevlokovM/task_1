@@ -11,12 +11,24 @@ IntHandler::IntHandler(std::shared_ptr<std::vector<std::string> > string_input_d
                        std::shared_ptr<std::vector<std::pair<int, int> > > handlers)
     : Handler::Handler(string_input_data, handlers) {}
 
+///
+/// \brief IntHandler::handle
+/// Обрабатывает int-данные. Достает данные их string-массива, конвертирует в double,
+/// чтобы в процессе не терялась точность, и прогоняет их по цепочке обработки.
+/// После чего конвертирует их в int, потом еще раз в string, и отправляет обратно
+/// вo входящий массив на свое место.
 void IntHandler::handle()
 {
+    // реализация кольцевого буфера для рассчета среднего по последним 10-и результатам.
+    // если результатов меньше, то соответственно среднее вычисляется по кол-ву результатов в наличии
+    // плюс текущее входное число.
+    // можно было сделать банально, просто доставать из входного массива данные, но мне показалось что так интереснее
     int sum[9] = {0,0,0,0,0,0,0,0,0};
     int count = 0;
     int pos = 0;
 
+    // внешний цикл по массиву входных данных, внутренний - по массиву обработчиков
+    // цмкл обработчиков состоит из пар, в которой: first - индекс обработки, second - аргумент для обработки
     std::for_each(this->string_input_data_->begin(), this->string_input_data_->end(), [this, &sum, & count, & pos](std::string & number){
 
         double temp = std::stod(number);
@@ -47,6 +59,7 @@ void IntHandler::handle()
             }
         }
 
+        // апдейты для кольцевого буфера
         sum[pos] = temp;
         pos++;
         if(pos == 9)
@@ -54,6 +67,7 @@ void IntHandler::handle()
         if(count <= 9)
             count++;
 
+        // сохранение результата
         int handled_number = (int) temp;
         number = std::to_string(handled_number);
     });
@@ -63,12 +77,23 @@ FloatHandler::FloatHandler(std::shared_ptr<std::vector<std::string> > string_inp
                            std::shared_ptr<std::vector<std::pair<int, int> > > handlers)
     : Handler::Handler(string_input_data, handlers) {}
 
+///
+/// \brief FloatHandler::handle
+/// Обрабатывает floa-данные. Достает данные их string-массива, конвертирует вo float,
+/// и прогоняет их по цепочке обработки. После чего конвертирует их в string, и отправляет обратно
+/// вo входящий массив на свое место.
 void FloatHandler::handle()
 {
+    // реализация кольцевого буфера для рассчета среднего по последним 10-и результатам.
+    // если результатов меньше, то соответственно среднее вычисляется по кол-ву результатов в наличии
+    // плюс текущее входное число.
+    // можно было сделать банально, просто доставать из входного массива данные, но мне показалось что так интереснее/
     float sum[9] = {0,0,0,0,0,0,0,0,0};
     int count = 0;
     int pos = 0;
 
+    // внешний цикл по массиву входных данных, внутренний - по массиву обработчиков
+    // цмкл обработчиков состоит из пар, в которой: first - индекс обработки, second - аргумент для обработки
     std::for_each(this->string_input_data_->begin(), this->string_input_data_->end(), [this, &sum, & count, & pos](std::string & number){
 
         float temp = std::stof(number);
@@ -99,6 +124,7 @@ void FloatHandler::handle()
             }
         }
 
+        // апдейты для кольцевого буфера
         sum[pos] = temp;
         pos++;
         if(pos == 9)
@@ -106,6 +132,7 @@ void FloatHandler::handle()
         if(count < 9)
             count++;
 
+        // сохранение результата
         number = std::to_string(temp);
     });
 }
